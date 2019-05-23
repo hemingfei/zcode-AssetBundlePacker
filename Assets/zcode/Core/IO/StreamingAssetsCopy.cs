@@ -4,6 +4,7 @@
 ***************************************************************/
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace zcode
 {
@@ -38,9 +39,9 @@ namespace zcode
             SetResult(false, emIOOperateCode.Succeed, null);
             do
             {
-                using (WWW w = new WWW(src))
+                using (UnityWebRequest w = UnityWebRequest.Get(src))
                 {
-                    yield return w;
+                    yield return w.SendWebRequest();
 
                     if (!string.IsNullOrEmpty(w.error))
                     {
@@ -48,9 +49,9 @@ namespace zcode
                     }
                     else
                     {
-                        if (w.isDone && w.bytes.Length > 0)
+                        if (w.isDone && w.downloadHandler.data.Length > 0)
                         {
-                            var ret = zcode.FileHelper.WriteBytesToFile(dest, w.bytes, w.bytes.Length);
+                            var ret = zcode.FileHelper.WriteBytesToFile(dest, w.downloadHandler.data, w.downloadHandler.data.Length);
                             SetResult(true, ret, null);
                         }
                     }

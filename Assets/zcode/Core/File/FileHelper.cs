@@ -9,6 +9,7 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Networking;
 
 namespace zcode
 {
@@ -175,7 +176,7 @@ namespace zcode
                 Debug.LogErrorFormat("WriteBytesToFile() = FAILED! Msg:{0}, Type:{1}", ex.Message, ex.GetType());
                 return emIOOperateCode.DiskFull;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return emIOOperateCode.Fail;
             }
@@ -198,7 +199,7 @@ namespace zcode
 
             FileInfo[] fi = dti.GetFiles();
 
-            for (int i = 0; i < fi.Length; ++i )
+            for (int i = 0; i < fi.Length; ++i)
             {
                 sum += Convert.ToInt32(fi[i].Length / 1024);
             }
@@ -259,13 +260,14 @@ namespace zcode
         /// </summary>
         static IEnumerator LoadAssetbundleFromLocal(string path, string name)
         {
-            WWW w = new WWW("file:///" + path + "/" + name);
+            UnityWebRequest w = UnityWebRequestAssetBundle.GetAssetBundle("file:///" + path + "/" + name);
 
-            yield return w;
+            yield return w.SendWebRequest();
 
             if (w.isDone)
             {
-                GameObject.Instantiate(w.assetBundle.mainAsset);
+                AssetBundle assetBundle = ((DownloadHandlerAssetBundle)w.downloadHandler).assetBundle;
+                GameObject.Instantiate(assetBundle.LoadAsset(assetBundle.GetAllAssetNames()[0]));
             }
         }
 
@@ -278,11 +280,11 @@ namespace zcode
             src = "file:///" + src;
 #endif
             bool is_done = false;
-            do 
+            do
             {
-                using (WWW w = new WWW(src))
+                using (UnityWebRequest w = UnityWebRequest.Get(src))
                 {
-                    yield return w;
+                    yield return w.SendWebRequest();
 
                     if (!string.IsNullOrEmpty(w.error))
                     {
@@ -291,8 +293,8 @@ namespace zcode
                     }
                     else
                     {
-                        if (w.isDone && w.bytes.Length > 0)
-                            zcode.FileHelper.WriteBytesToFile(dest, w.bytes, w.bytes.Length);
+                        if (w.isDone && w.downloadHandler.data.Length > 0)
+                            zcode.FileHelper.WriteBytesToFile(dest, w.downloadHandler.data, w.downloadHandler.data.Length);
 
                         is_done = true;
                     }
@@ -347,7 +349,7 @@ namespace zcode
 
             DirectoryInfo dir = new DirectoryInfo(path);
             FileInfo[] files = dir.GetFiles("*");
-            for(int i = 0 ; i < files.Length ; ++i)
+            for (int i = 0; i < files.Length; ++i)
             {
                 if ((files[i].Attributes & filter) > 0)
                     continue;

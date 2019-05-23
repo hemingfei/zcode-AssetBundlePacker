@@ -905,9 +905,9 @@ namespace zcode.AssetBundlePacker
                 GUILayout.Space(-1f);
                 bool highlight = selection_scene_ == scene.ScenePath;
                 GUI.backgroundColor = highlight ? Color.white : new Color(0.8f, 0.8f, 0.8f);
-                GUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(20f));
+                GUILayout.BeginHorizontal("TextArea", GUILayout.MinHeight(20f));
                 GUI.backgroundColor = Color.white;
-                if (GUILayout.Button(scene.ScenePath, "OL TextField", GUILayout.Height(20f)))
+                if (GUILayout.Button(scene.ScenePath, "TextField", GUILayout.Height(20f)))
                     selection_scene_ = scene.ScenePath;
 
                 scene.IsBuild = GUILayout.Toggle(scene.IsBuild, "", GUILayout.Width(80f));

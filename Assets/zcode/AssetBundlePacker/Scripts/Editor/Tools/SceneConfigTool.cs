@@ -143,7 +143,7 @@ namespace zcode.AssetBundlePacker
 
             for (int i = 0; i < array.Length; ++i)
             {
-                UnityEngine.Object parentObject = PrefabUtility.GetPrefabParent(array[i]);
+                UnityEngine.Object parentObject = PrefabUtility.GetCorrespondingObjectFromSource(array[i]);
                 string path = AssetDatabase.GetAssetPath(parentObject);
                 if (string.IsNullOrEmpty(path))
                     continue;
