@@ -106,12 +106,12 @@ namespace zcode.AssetBundlePacker
                 var config = AssetBundleBrowseWindow.Instance.Manifest.Data;
 
                 GUI.backgroundColor = IsSelect ? Color.white : new Color(0.8f, 0.8f, 0.8f);
-                GUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(20f));
+                GUILayout.BeginHorizontal("TextArea", GUILayout.MinHeight(20f));
                 GUI.color = IsSelect ? Color.yellow : Color.white;
                 GUILayout.Label(Index.ToString(), GUILayout.Width(24f));
-                bool toggle = GUILayout.Button(AssetBundle.AssetBundleName, "OL TextField", GUILayout.Height(20f));
+                bool toggle = GUILayout.Button(AssetBundle.AssetBundleName, "TextField", GUILayout.Height(20f));
                 float size = (float)AssetBundle.Size / 1024f;
-                bool toggle_1 = GUILayout.Button(size.ToString("F2") + "KB", "OL TextField", GUILayout.Width(108f));
+                bool toggle_1 = GUILayout.Button(size.ToString("F2") + "KB", "TextField", GUILayout.Width(108f));
                 GUILayout.Space(32f);
                 bool is_compress = GUILayoutHelper.Toggle(config.IsAllCompress || AssetBundle.IsCompress, "", config.IsAllCompress, GUILayout.Width(24f));
                 GUILayout.Space(40f);

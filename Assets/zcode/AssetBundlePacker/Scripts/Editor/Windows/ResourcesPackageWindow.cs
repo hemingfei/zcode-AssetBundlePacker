@@ -233,7 +233,7 @@ namespace zcode.AssetBundlePacker
                         string path = EditorCommon.ProjectDirectory + asset;
                         bool exist = System.IO.File.Exists(path) || System.IO.Directory.Exists(path);
                         GUI.color = exist ? Color.white : Color.red;
-                        GUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(20f));
+                        GUILayout.BeginHorizontal("TextArea", GUILayout.MinHeight(20f));
                         GUI.backgroundColor = Color.white;
                         GUILayout.Label(asset);
 
